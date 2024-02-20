@@ -1,44 +1,47 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using System.Diagnostics;
+using System.Formats.Asn1;
+using System.Runtime.InteropServices;
 
-// Ask for user's name
-using System.Diagnostics.CodeAnalysis;
-
-Console.WriteLine("Hello! What is your name?");
-
-string userName = Console.ReadLine();
-
-Console.WriteLine("Hello " + userName +"!");
-// Ask for opponent's name
-Console.WriteLine("Who is your opponent?");
-
-string opponentName = Console.ReadLine();
-
-Console.WriteLine("Your opponent is " + opponentName +"!");
-
-Console.WriteLine("Press any key to generate a random number for " + userName + ".");
+Console.WriteLine("The objective of this game is to guess what number I generate between 1-100.");
+Console.WriteLine("Press any key to continue.");
 
 Console.ReadKey(true);
+
 Random rand = new Random();
-int randomNumber = rand.Next();
+int randomNumber = rand.Next(1, 101);
 
-Console.WriteLine("Random number generated for " + userName +": " + randomNumber );
+int attempts = 0; // initial amount of attempts
 
-Console.WriteLine("Press any key to generate a random number for " + opponentName + ".");
+int maxAttempts = 5; // maximum amount of attempts
 
-Console.ReadKey(true);
-Random rand2 = new Random();
-int randomNumber2 = rand2.Next();
+bool guessedCorrectly = false;
 
-Console.WriteLine("Random number generated for " + opponentName +": " + randomNumber2 );
-
-int highest = Math.Max(randomNumber, randomNumber2);
-
-if (randomNumber < randomNumber2)
+while (!guessedCorrectly && attempts < maxAttempts)
 {
-    Console.WriteLine(opponentName + " wins!");
+Console.WriteLine("What is your guess?");
+
+int answer = Convert.ToInt32(Console.ReadLine());
+
+attempts++; // helps to make the attempt variable change apparently
+
+
+if (answer < randomNumber) // answer is too low
+    {
+        Console.WriteLine("That guess is too low! Try again");
+    }
+    else if (answer > randomNumber) // answer is too high
+    {
+        Console.WriteLine("That guess is too high! Try again");
+    }
+else // answer is right
+{
+    Console.WriteLine("You win! Congratulations!");
+    guessedCorrectly = true; 
+}
 }
 
-if (randomNumber2 < randomNumber)
+if (!guessedCorrectly && attempts >= maxAttempts) // exceeding maximum amount of attempts
 {
-    Console.WriteLine(userName + " wins!");
+    Console.WriteLine("You ran out of attempts. The correct number was: " + randomNumber + ". " + "You lose!");
 }
